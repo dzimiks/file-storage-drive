@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'raf'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'com.google.apis:google-api-services-drive:v3-rev159-1.25.0'
+    compile group: 'com.google.api-client', name: 'google-api-client-java6', version: '1.28.0'
+    compile group: 'com.google.oauth-client', name: 'google-oauth-client-jetty', version: '1.28.0'
+    compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '3.0.11'
+    compile files('lib/file-storage.jar')
+}
