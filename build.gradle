@@ -17,7 +17,7 @@ dependencies {
     compile group: 'com.google.api-client', name: 'google-api-client-java6', version: '1.28.0'
     compile group: 'com.google.oauth-client', name: 'google-oauth-client-jetty', version: '1.28.0'
     compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '3.0.11'
-    compile files('lib/file-storage.jar')
+    compile files('lib/file-storage-1.0.jar')
 }
 
 task buildJar(type: Jar) {
