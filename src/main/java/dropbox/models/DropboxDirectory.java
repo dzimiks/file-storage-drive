@@ -1,5 +1,6 @@
 package dropbox.models;
 
+import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
@@ -8,10 +9,7 @@ import com.dropbox.core.v2.users.FullAccount;
 import models.Arhive;
 import models.Directory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -77,22 +75,29 @@ public class DropboxDirectory implements Directory {
 
 	@Override
 	public void download(String src, String dest) {
-
+		try {
+			DbxDownloader<DownloadZipResult> result = client.files().downloadZip(src);
+			result.download(new FileOutputStream(dest));
+		} catch (DbxException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void upload(String src, String dest) {
-//		Arhive arhive = new Arhive();
-		String path = "/Users/dzimiks/Desktop/projects/file-storage-drive/src/main/java/dropbox/models/dropbox_zip";
-
-//		try {
-//			arhive.zipDirectory(new File(src), "dir", path);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		Arhive arhive = new Arhive();
+//		String path = "/Users/dzimiks/Desktop/projects/file-storage-drive/src/main/java/dropbox/models/dropbox_zip";
+		String name = src.substring(src.lastIndexOf(File.separator) + 1);
+		System.out.println(name);
 
 		try {
-			InputStream in = new FileInputStream(path + File.separator + "dir.zip");
+			arhive.zipDirectory(new File("/Users/dzimiks/Desktop/projects/file-storage-drive/" + src), name, ".");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			InputStream in = new FileInputStream(src + File.separator + name + ".zip");
 			FileMetadata metadata = client.files().uploadBuilder(dest).uploadAndFinish(in);
 		} catch (IOException | DbxException ioe) {
 			ioe.printStackTrace();
