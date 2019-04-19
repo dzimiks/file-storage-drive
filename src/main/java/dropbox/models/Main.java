@@ -2,6 +2,7 @@ package dropbox.models;
 
 import exceptions.CreateFileException;
 import exceptions.ListFilesException;
+import exceptions.UploadMultipleZipException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,10 +17,20 @@ public class Main {
 		DropboxDirectory storage = new DropboxDirectory("75JP0V7E00AAAAAAAAAAwSkAclPzcUjOLxmQ31IHbn0OpmejKrgIrmCtrLDtrGr1");
 		String storageName = File.separator + "UUP2018-januar";
 
-		// TODO
+//		// TODO
+//		try {
+//			storage.listFiles("", true);
+//		} catch (ListFilesException e) {
+//			e.printStackTrace();
+//		}
+
+		ArrayList<File> dirs = new ArrayList<>();
+		dirs.add(new File("/Users/dzimiks/Desktop/upload"));
+		dirs.add(new File("/Users/dzimiks/Desktop/books"));
+
 		try {
-			storage.listFiles("", true);
-		} catch (ListFilesException e) {
+			storage.uploadMultipleZip(dirs, "/UUP2018-januar", "dzimiks");
+		} catch (UploadMultipleZipException e) {
 			e.printStackTrace();
 		}
 

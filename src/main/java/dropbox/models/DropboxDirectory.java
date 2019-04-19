@@ -9,6 +9,7 @@ import com.dropbox.core.v2.users.FullAccount;
 import exceptions.*;
 import models.Arhive;
 import models.Directory;
+import models.LocalDirectory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class DropboxDirectory implements Directory {
 
 	/**
 	 * Dropbox directory constructor.
+	 *
 	 * @param accessToken sets access token read from config file.
 	 */
 	public DropboxDirectory(String accessToken) {
@@ -47,6 +49,7 @@ public class DropboxDirectory implements Directory {
 
 	/**
 	 * Initializing client.
+	 *
 	 * @param clientID
 	 */
 	public void initClient(String clientID) {
@@ -130,27 +133,48 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public void uploadMultiple(ArrayList<File> files, String dest,String name) throws UploadMultipleException {
+	public void uploadMultiple(ArrayList<File> files, String dest, String name) throws UploadMultipleException {
 
 	}
 
 	@Override
-	public void uploadMultipleZip(ArrayList<File> files, String dest,String name) throws UploadMultipleZipException{
+	public void uploadMultipleZip(ArrayList<File> files, String dest, String name) throws UploadMultipleZipException {
+		Arhive arhive = new Arhive();
+		LocalDirectory localDirectory = new LocalDirectory();
+		System.out.println(name);
+
+		try {
+			localDirectory.uploadMultiple(files, "/Users/dzimiks/Desktop/projects/file-storage-drive/src/dropbox_zip", name);
+		} catch (UploadMultipleException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			arhive.zipDirectory(new File("/Users/dzimiks/Desktop/projects/file-storage-drive/src/dropbox_zip"), name, "./");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			InputStream in = new FileInputStream(name + ".zip");
+			FileMetadata metadata = client.files().uploadBuilder(dest + File.separator + name + ".zip").uploadAndFinish(in);
+		} catch (IOException | DbxException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+
+	@Override
+	public void move(String src, String dest) throws MoveException {
 
 	}
 
 	@Override
-	public void move(String src, String dest) throws MoveException{
+	public void rename(String name, String path) throws RenameException {
 
 	}
 
 	@Override
-	public void rename(String name, String path) throws RenameException{
-
-	}
-
-	@Override
-	public void listFiles(String s, boolean b) throws ListFilesException{
+	public void listFiles(String s, boolean b) throws ListFilesException {
 		ListFolderBuilder listFolderBuilder = client.files().listFolderBuilder("");
 		ListFolderResult result = null;
 
@@ -184,7 +208,7 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public void listFilesWithExtensions(String s, String[] strings, boolean b) throws ListFilesException{
+	public void listFilesWithExtensions(String s, String[] strings, boolean b) throws ListFilesException {
 
 	}
 
@@ -213,7 +237,7 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public ArrayList<File> listDirs(String s, boolean b) throws ListDirectoryException{
+	public ArrayList<File> listDirs(String s, boolean b) throws ListDirectoryException {
 		ArrayList<File> directories = new ArrayList<>();
 		ListFolderBuilder folderMetadata = client.files().listFolderBuilder(s);
 
