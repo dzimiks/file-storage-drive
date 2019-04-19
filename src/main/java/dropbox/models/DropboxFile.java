@@ -6,7 +6,7 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.users.FullAccount;
-import exceptions.CreateFileException;
+import exceptions.*;
 import models.BasicFile;
 
 import java.io.*;
@@ -30,16 +30,17 @@ public class DropboxFile implements BasicFile {
 	}
 
 	@Override
-	public void delete(String path) {
+	public void delete(String path) throws DeleteException {
 		try {
 			Metadata metadata = client.files().delete(path);
 		} catch (DbxException dbxe) {
 			dbxe.printStackTrace();
+			throw new DeleteException();
 		}
 	}
 
 	@Override
-	public void download(String src, String dest) {
+	public void download(String src, String dest) throws DownloadException {
 		try {
 			OutputStream downloadFile = new FileOutputStream(dest);
 
@@ -52,36 +53,38 @@ public class DropboxFile implements BasicFile {
 			}
 		} catch (DbxException | IOException e) {
 			System.out.println("Unable to download file to local system\n Error: " + e);
+			throw new DownloadException();
 		}
 	}
 
 	@Override
-	public void upload(String src, String dest) {
+	public void upload(String src, String dest) throws UploadException {
 		try {
 			InputStream in = new FileInputStream(src);
 			FileMetadata metadata = client.files().uploadBuilder(dest).uploadAndFinish(in);
 		} catch (IOException | DbxException ioe) {
 			ioe.printStackTrace();
+			throw new UploadException();
 		}
 	}
 
 	@Override
-	public void uploadMultiple(ArrayList<File> files, String dest,String name) {
+	public void uploadMultiple(ArrayList<File> files, String dest,String name) throws UploadMultipleException {
 
 	}
 
 	@Override
-	public void uploadMultipleZip(ArrayList<File> files, String dest,String name) {
+	public void uploadMultipleZip(ArrayList<File> files, String dest,String name) throws UploadMultipleZipException {
 
 	}
 
 	@Override
-	public void move(String src, String dest) {
+	public void move(String src, String dest) throws MoveException{
 
 	}
 
 	@Override
-	public void rename(String name, String path) {
+	public void rename(String name, String path) throws RenameException{
 
 	}
 }
