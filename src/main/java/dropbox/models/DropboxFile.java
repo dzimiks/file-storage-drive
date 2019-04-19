@@ -10,7 +10,7 @@ import exceptions.*;
 import models.BasicFile;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author dzimiks
@@ -75,12 +75,12 @@ public class DropboxFile implements BasicFile {
 	}
 
 	@Override
-	public void uploadMultiple(ArrayList<File> files, String dest,String name) throws UploadMultipleException {
+	public void uploadMultiple(List<File> files, String dest, String name) throws UploadMultipleException {
 
 	}
 
 	@Override
-	public void uploadMultipleZip(ArrayList<File> files, String dest,String name) throws UploadMultipleZipException {
+	public void uploadMultipleZip(List<File> files, String dest,String name) throws UploadMultipleZipException {
 
 	}
 

@@ -14,6 +14,7 @@ import models.LocalDirectory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author dzimiks
@@ -133,12 +134,12 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public void uploadMultiple(ArrayList<File> files, String dest, String name) throws UploadMultipleException {
+	public void uploadMultiple(List<File> files, String dest, String name) throws UploadMultipleException {
 
 	}
 
 	@Override
-	public void uploadMultipleZip(ArrayList<File> files, String dest, String name) throws UploadMultipleZipException {
+	public void uploadMultipleZip(List<File> files, String dest, String name) throws UploadMultipleZipException {
 		Arhive arhive = new Arhive();
 		LocalDirectory localDirectory = new LocalDirectory();
 		System.out.println(name);
@@ -174,7 +175,7 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public ArrayList<File> listFiles(String s, boolean b) throws ListFilesException{
+	public List<File> listFiles(String s, boolean b) throws ListFilesException {
 		ArrayList<File> files = new ArrayList<>();
 		ListFolderBuilder listFolderBuilder = client.files().listFolderBuilder("");
 		ListFolderResult result = null;
@@ -210,12 +211,12 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public ArrayList<File> listFilesWithExtensions(String s, String[] strings, boolean b) throws ListFilesException{
+	public List<File> listFilesWithExtensions(String s, String[] strings, boolean b) throws ListFilesException {
 		return null;
 	}
 
-	public ArrayList<String> listFilesWithGivenExtensions(String s, String[] strings, boolean b) throws ListFilesException {
-		ArrayList<String> files = new ArrayList<>();
+	public List<String> listFilesWithGivenExtensions(String s, String[] strings, boolean b) throws ListFilesException {
+		List<String> files = new ArrayList<>();
 
 		try {
 			for (String query : strings) {
@@ -239,8 +240,8 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public ArrayList<File> listDirs(String s, boolean b) throws ListDirectoryException {
-		ArrayList<File> directories = new ArrayList<>();
+	public List<File> listDirs(String s, boolean b) throws ListDirectoryException {
+		List<File> directories = new ArrayList<>();
 		ListFolderBuilder folderMetadata = client.files().listFolderBuilder(s);
 
 		try {
