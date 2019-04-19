@@ -100,12 +100,12 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public void uploadMultiple(ArrayList<File> files, String dest) {
+	public void uploadMultiple(ArrayList<File> files, String dest,String name) {
 
 	}
 
 	@Override
-	public void uploadMultipleZip(ArrayList<File> files, String dest) {
+	public void uploadMultipleZip(ArrayList<File> files, String dest,String name) {
 
 	}
 
@@ -180,17 +180,20 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
-	public void listDirs(String s, boolean b) {
+	public ArrayList<File> listDirs(String s, boolean b) {
+		ArrayList<File> directories = new ArrayList<>();
 		ListFolderBuilder folderMetadata = client.files().listFolderBuilder(s);
 
 		try {
 			ListFolderResult result = folderMetadata.start();
 
 			for (Metadata data : result.getEntries()) {
-				System.out.println(data.getPathDisplay());
+//				System.out.println(data.getPathDisplay());
+				directories.add(new File(data.getPathDisplay()));
 			}
 		} catch (DbxException e) {
 			e.printStackTrace();
 		}
+		return directories;
 	}
 }

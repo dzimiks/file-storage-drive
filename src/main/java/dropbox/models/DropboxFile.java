@@ -66,12 +66,12 @@ public class DropboxFile implements BasicFile {
 	}
 
 	@Override
-	public void uploadMultiple(ArrayList<File> files, String dest) {
+	public void uploadMultiple(ArrayList<File> files, String dest,String name) {
 
 	}
 
 	@Override
-	public void uploadMultipleZip(ArrayList<File> files, String dest) {
+	public void uploadMultipleZip(ArrayList<File> files, String dest,String name) {
 
 	}
 
