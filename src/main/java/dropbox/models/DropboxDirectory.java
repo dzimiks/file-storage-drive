@@ -49,8 +49,12 @@ public class DropboxDirectory implements Directory {
 
 	/**
 	 * Initializing client.
+<<<<<<< HEAD
 	 *
 	 * @param clientID
+=======
+	 * @param clientID clientId.
+>>>>>>> 3799d3bd2d06e9d1a3efffa33b6f1de180c5a1bd
 	 */
 	public void initClient(String clientID) {
 		this.config = new DbxRequestConfig(clientID);
@@ -174,7 +178,12 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public void listFiles(String s, boolean b) throws ListFilesException {
+=======
+	public ArrayList<File> listFiles(String s, boolean b) throws ListFilesException{
+		ArrayList<File> files = new ArrayList<>();
+>>>>>>> 3799d3bd2d06e9d1a3efffa33b6f1de180c5a1bd
 		ListFolderBuilder listFolderBuilder = client.files().listFolderBuilder("");
 		ListFolderResult result = null;
 
@@ -190,11 +199,12 @@ public class DropboxDirectory implements Directory {
 				for (Metadata entry : result.getEntries()) {
 					if (entry instanceof FileMetadata) {
 						System.out.println("Added file: " + entry.getPathLower());
+						files.add(new File(entry.getPathDisplay()));
 					}
 				}
 
 				if (!result.getHasMore()) {
-					return;
+					return files;
 				}
 
 				try {
@@ -208,8 +218,13 @@ public class DropboxDirectory implements Directory {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public void listFilesWithExtensions(String s, String[] strings, boolean b) throws ListFilesException {
 
+=======
+	public ArrayList<File> listFilesWithExtensions(String s, String[] strings, boolean b) throws ListFilesException{
+		return null;
+>>>>>>> 3799d3bd2d06e9d1a3efffa33b6f1de180c5a1bd
 	}
 
 	public ArrayList<String> listFilesWithGivenExtensions(String s, String[] strings, boolean b) throws ListFilesException {
