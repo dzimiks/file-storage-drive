@@ -1,6 +1,7 @@
 package dropbox.models;
 
 import exceptions.CreateFileException;
+import exceptions.ListFilesException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,7 +17,11 @@ public class Main {
 		String storageName = File.separator + "UUP2018-januar";
 
 		// TODO
-		storage.listFiles("", true);
+		try {
+			storage.listFiles("", true);
+		} catch (ListFilesException e) {
+			e.printStackTrace();
+		}
 
 		// TODO
 //		ArrayList<String> files = storage.listFilesWithGivenExtensions("/UUP2018-januar", new String[]{"zip", "txt"}, true);

@@ -17,9 +17,15 @@ import java.util.ArrayList;
  * Date: 13-04-2019 at 19:04
  */
 public class DropboxFile implements BasicFile {
-
+	/**
+	 * Use this variable to make remote calls to the Dropbox API user endpoints.
+	 */
 	private DbxClientV2 client = null;
 
+	/**
+	 * Dropbox file constructor
+	 * @param client contains access token
+	 */
 	public DropboxFile(DbxClientV2 client) {
 		this.client = client;
 	}
