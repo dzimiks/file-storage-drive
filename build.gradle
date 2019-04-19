@@ -19,3 +19,14 @@ dependencies {
     compile group: 'com.dropbox.core', name: 'dropbox-core-sdk', version: '3.0.11'
     compile files('lib/file-storage.jar')
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'dropbox.models.Main'
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}

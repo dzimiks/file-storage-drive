@@ -3,10 +3,7 @@ package dropbox.models;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.CreateFolderErrorException;
-import com.dropbox.core.v2.files.CreateFolderResult;
-import com.dropbox.core.v2.files.FileMetadata;
-import com.dropbox.core.v2.files.FolderMetadata;
+import com.dropbox.core.v2.files.*;
 import com.dropbox.core.v2.users.FullAccount;
 import models.Arhive;
 import models.Directory;
@@ -16,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author dzimiks
@@ -23,12 +21,13 @@ import java.util.ArrayList;
  */
 public class DropboxDirectory implements Directory {
 
-	private static final String ACCESS_TOKEN = "xxx";
 	private DbxRequestConfig config = null;
 	private DbxClientV2 client = null;
 	private FullAccount account = null;
+	private String ACCESS_TOKEN;
 
-	public DropboxDirectory() {
+	public DropboxDirectory(String accessToken) {
+		this.ACCESS_TOKEN = accessToken;
 		initClient("file-storage-remote");
 	}
 
@@ -122,7 +121,34 @@ public class DropboxDirectory implements Directory {
 
 	@Override
 	public void listFiles(String s, boolean b) {
+		ListFolderBuilder listFolderBuilder = client.files().listFolderBuilder("");
+		ListFolderResult result = null;
 
+		try {
+			result = listFolderBuilder.withRecursive(true).start();
+		} catch (DbxException e) {
+			e.printStackTrace();
+		}
+
+		while (true) {
+			if (result != null) {
+				for (Metadata entry : result.getEntries()) {
+					if (entry instanceof FileMetadata) {
+						System.out.println("Added file: " + entry.getPathLower());
+					}
+				}
+
+				if (!result.getHasMore()) {
+					return;
+				}
+
+				try {
+					result = client.files().listFolderContinue(result.getCursor());
+				} catch (DbxException e) {
+					System.out.println("Couldn't get listFolderContinue");
+				}
+			}
+		}
 	}
 
 	@Override
@@ -130,8 +156,41 @@ public class DropboxDirectory implements Directory {
 
 	}
 
+	public ArrayList<String> listFilesWithGivenExtensions(String s, String[] strings, boolean b) {
+		ArrayList<String> files = new ArrayList<>();
+
+		try {
+			for (String query : strings) {
+				SearchResult searchResult = client.files().search(s, query);
+
+				for (SearchMatch match : searchResult.getMatches()) {
+					Metadata metadata = match.getMetadata();
+					files.add(metadata.getPathDisplay());
+				}
+			}
+		} catch (DbxException e) {
+			e.printStackTrace();
+		}
+
+		if (b) {
+			Collections.sort(files);
+		}
+
+		return files;
+	}
+
 	@Override
 	public void listDirs(String s, boolean b) {
+		ListFolderBuilder folderMetadata = client.files().listFolderBuilder(s);
 
+		try {
+			ListFolderResult result = folderMetadata.start();
+
+			for (Metadata data : result.getEntries()) {
+				System.out.println(data.getPathDisplay());
+			}
+		} catch (DbxException e) {
+			e.printStackTrace();
+		}
 	}
 }

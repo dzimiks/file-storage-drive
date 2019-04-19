@@ -3,6 +3,7 @@ package dropbox.models;
 import exceptions.CreateFileException;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * @author dzimiks
@@ -11,8 +12,21 @@ import java.io.File;
 public class Main {
 
 	public static void main(String[] args) {
-		DropboxDirectory storage = new DropboxDirectory();
+		DropboxDirectory storage = new DropboxDirectory("75JP0V7E00AAAAAAAAAAwSkAclPzcUjOLxmQ31IHbn0OpmejKrgIrmCtrLDtrGr1");
 		String storageName = File.separator + "UUP2018-januar";
+
+		// TODO
+		storage.listFiles("", true);
+
+		// TODO
+//		ArrayList<String> files = storage.listFilesWithGivenExtensions("/UUP2018-januar", new String[]{"zip", "txt"}, true);
+//
+//		for (String f : files) {
+//			System.out.println(f);
+//		}
+
+		// TODO
+//		storage.listDirs("/UUP2018-januar", false);
 
 //		storage.create(storageName, null);
 //		storage.delete(storageName);
