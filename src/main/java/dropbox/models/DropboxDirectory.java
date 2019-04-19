@@ -19,17 +19,36 @@ import java.util.Collections;
  * Date: 13-04-2019 at 19:16
  */
 public class DropboxDirectory implements Directory {
-
+	/**
+	 * A grouping of a few configuration parameters for how we should make requests to the Dropbox servers.
+	 */
 	private DbxRequestConfig config = null;
+	/**
+	 * Use this variable to make remote calls to the Dropbox API user endpoints.
+	 */
 	private DbxClientV2 client = null;
+	/**
+	 * Detailed information about the current user's account.
+	 */
 	private FullAccount account = null;
+	/**
+	 * Token used for establishing connection with app's directory in dropbox.
+	 */
 	private String ACCESS_TOKEN;
 
+	/**
+	 * Dropbox directory constructor.
+	 * @param accessToken sets access token read from config file.
+	 */
 	public DropboxDirectory(String accessToken) {
 		this.ACCESS_TOKEN = accessToken;
 		initClient("file-storage-remote");
 	}
 
+	/**
+	 * Initializing client.
+	 * @param clientID
+	 */
 	public void initClient(String clientID) {
 		this.config = new DbxRequestConfig(clientID);
 		this.client = new DbxClientV2(config, ACCESS_TOKEN);
