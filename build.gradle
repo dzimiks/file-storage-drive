@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'raf'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 sourceCompatibility = 1.8
 
@@ -20,13 +20,17 @@ dependencies {
     compile files('lib/file-storage.jar')
 }
 
-jar {
+task buildJar(type: Jar) {
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+
     manifest {
-        attributes 'Main-Class': 'dropbox.models.Main'
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': 1.0,
+                'Main-Class': 'main.Main'
     }
+    baseName = project.name
     from {
-        configurations.compile.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
+    with jar
 }

@@ -9,10 +9,7 @@ import com.dropbox.core.v2.users.FullAccount;
 import exceptions.CreateFileException;
 import models.BasicFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -43,7 +40,19 @@ public class DropboxFile implements BasicFile {
 
 	@Override
 	public void download(String src, String dest) {
+		try {
+			OutputStream downloadFile = new FileOutputStream(dest);
 
+			try {
+				FileMetadata metadata = client.files()
+						.downloadBuilder(src)
+						.download(downloadFile);
+			} finally {
+				downloadFile.close();
+			}
+		} catch (DbxException | IOException e) {
+			System.out.println("Unable to download file to local system\n Error: " + e);
+		}
 	}
 
 	@Override
